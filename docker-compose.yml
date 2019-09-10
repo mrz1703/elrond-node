@@ -1,0 +1,19 @@
+version: '3.7'
+services:
+
+  elrond:
+    container_name: elrond
+    restart: always
+    volumes:
+      - ./config/:/opt/app/config/
+      - ./db/:/opt/app/db/
+      - ./logs/:/opt/app/logs/
+      - ./stats/:/opt/app/stats/
+    ports:
+      - '8080:8080'
+      - '38303:38303'
+    build:
+      context: .build
+      args:
+        ELROND_VERSION: v1.0.15
+        CONFIG_VERSION: testnet-1012
