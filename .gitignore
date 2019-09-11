@@ -1,1 +1,4 @@
 config/
+db/
+logs/
+stats/
