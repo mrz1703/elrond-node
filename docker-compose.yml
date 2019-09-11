@@ -7,11 +7,11 @@ services:
     volumes:
       - ./config/:/opt/app/config/
       - ./db/:/opt/app/db/
-      - ./logs/:/opt/app/logs/
-      - ./stats/:/opt/app/stats/
-    ports:
-      - '8080:8080'
-      - '38303:38303'
+#      - ./logs/:/opt/app/logs/
+#      - ./stats/:/opt/app/stats/
+#    ports:
+#      - '127.0.0.1:8080:8080'
+#      - '127.0.0.1:38303:38303'
     build:
       context: .build
       args:
