@@ -3,15 +3,15 @@ services:
 
   elrond:
     container_name: elrond
-    restart: always
+#    restart: always
     volumes:
-      - ./config/:/opt/app/config/
-      - ./db/:/opt/app/db/
-#      - ./logs/:/opt/app/logs/
-#      - ./stats/:/opt/app/stats/
+      - ./data/config/:/opt/app/config/
+      - ./data/db/:/opt/app/db/
+#      - ./data/logs/:/opt/app/logs/
+#      - ./data/stats/:/opt/app/stats/
 #    ports:
-#      - '127.0.0.1:8080:8080'
-#      - '127.0.0.1:38303:38303'
+#      - '127.0.0.1:8080:8080'    # API
+#      - '127.0.0.1:38303:38303'  # ???
     build:
       context: .build
       args:

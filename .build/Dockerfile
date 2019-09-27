@@ -22,8 +22,12 @@ RUN git clone -b ${CONFIG_VERSION} https://github.com/ElrondNetwork/elrond-confi
 
 FROM alpine
 WORKDIR /opt/app
+RUN apk add --no-cache bash coreutils
 COPY --from=build /opt/elrond-config/ /tmp/config/
 COPY --from=build /opt/elrond-go/cmd/keygenerator/keygenerator /opt/elrond-go/cmd/node/node /opt/app/
 RUN ln -s /opt/app/node /usr/local/bin/ && \
     ln -s /opt/app/keygenerator /usr/local/bin/
-CMD node --use-log-view
+
+COPY entrypoint.sh /
+ENTRYPOINT ["/entrypoint.sh"]
+CMD ["node", "--use-log-view"]

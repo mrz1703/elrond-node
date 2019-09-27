@@ -7,7 +7,7 @@ x-custom:
     CONFIG_VERSION: ${CONFIG_VERSION}
 
   app_tmp: &app_tmp
-    restart: always
+#    restart: always
     build:
       context: .build
       args:
@@ -19,12 +19,12 @@ services:
     <<: *app_tmp
     container_name: elrond-1
     volumes:
-      - ./elrond-1/config/:/opt/app/config/
-      - ./elrond-1/db/:/opt/app/db/
+      - ./data/elrond-1/config/:/opt/app/config/
+      - ./data/elrond-1/db/:/opt/app/db/
 
   elrond-2:
     <<: *app_tmp
     container_name: elrond-2
     volumes:
-      - ./elrond-2/config/:/opt/app/config/
-      - ./elrond-2/db/:/opt/app/db/
+      - ./data/elrond-2/config/:/opt/app/config/
+      - ./data/elrond-2/db/:/opt/app/db/
