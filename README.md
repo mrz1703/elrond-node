@@ -22,7 +22,7 @@ After the first launch, all configuration files and a wallet are created automat
 ### Upgrade
  1) Stop your node with the command `docker-compose down` or `docker-compose -f docker-compose.multiple.yml down`.
  2) Copy your keys (`data/config/initialBalancesSk.pem` and `data/config/initialNodesSk.pem`) to a safe place and delete the folder `./data/`.
- 3) Update the value of the .env file to the new version values ​​and build the new container with the docker-compose build command.
+ 3) Update the value of the `.env` file to the new version values and build the new container with the `docker-compose build` command.
  4) Run the node with the command `docker-compose up -d` or `docker-compose -f docker-compose.multiple.yml up -d`.
  5) Stop the node with the command `docker-compose down` or` docker-compose -f docker-compose.multiple.yml down`. Copy the wallet keys (`initialBalancesSk.pem` and `initialNodesSk.pem`) from a safe place to the `./Data/config/` folder.
  6) Run the node with the command `docker-compose up -d` or` docker-compose -f docker-compose.multiple.yml up -d`. And enjoy her work. =)

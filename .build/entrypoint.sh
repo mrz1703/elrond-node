@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -x
+#set -x
 
 WORKDIR='/opt/app'
 CONFIGDIR='/opt/app/config'
