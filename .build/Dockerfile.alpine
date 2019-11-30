@@ -1,8 +1,9 @@
-FROM golang:1.13 as build
+# Not working v1.0.41
+FROM golang:1.13-alpine as build
 
-RUN apt-get update && \
-    apt-get upgrade -y && \
-    apt-get install -y curl bash mc git make gcc g++ build-essential
+RUN apk update && \
+    apk upgrade && \
+    apk add --no-cache curl bash mc git make gcc g++ linux-headers libgcc libstdc++
 
 # Pull elrond-go and compile
 WORKDIR /opt
@@ -14,6 +15,7 @@ RUN go mod vendor
 WORKDIR /opt/elrond-go/cmd/keygenerator
 RUN go build
 WORKDIR /opt/elrond-go/cmd/node
+#RUN apk add --no-cache --update musl musl-dev musl-utils libc6-compat libc-dev coreutils python alpine-baselayout build-base alpine-sdk
 RUN go build -i -v -ldflags="-X main.appVersion=$(git describe --tags --long --dirty)"
 
 # Pull elrond-config
@@ -23,11 +25,12 @@ RUN git clone https://github.com/ElrondNetwork/elrond-config && \
     cd elrond-config && \
     git checkout ${CONFIG_VERSION}
 
-
+FROM alpine
 WORKDIR /opt/app
-RUN mv /opt/elrond-config/ /tmp/config/ && \
-    cp /opt/elrond-go/cmd/keygenerator/keygenerator /opt/elrond-go/cmd/node/node /opt/app/ && \
-    ln -s /opt/app/node /usr/local/bin/ && \
+RUN apk add --no-cache bash coreutils
+COPY --from=build /opt/elrond-config/ /tmp/config/
+COPY --from=build /opt/elrond-go/cmd/keygenerator/keygenerator /opt/elrond-go/cmd/node/node /opt/app/
+RUN ln -s /opt/app/node /usr/local/bin/ && \
     ln -s /opt/app/keygenerator /usr/local/bin/
 
 COPY entrypoint.sh /

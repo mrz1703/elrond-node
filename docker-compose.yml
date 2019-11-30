@@ -1,19 +1,78 @@
 version: '3.7'
-services:
 
-  elrond:
-    container_name: elrond
-#    restart: always
-    volumes:
-      - ./data/config/:/opt/app/config/
-      - ./data/db/:/opt/app/db/
-#      - ./data/logs/:/opt/app/logs/
-#      - ./data/stats/:/opt/app/stats/
-#    ports:
-#      - '127.0.0.1:8080:8080'    # API
-#      - '127.0.0.1:38303:38303'  # ???
+x-custom:
+  # Templates anchors
+  build_env: &build_env
+    ELROND_VERSION: ${ELROND_VERSION}
+    CONFIG_VERSION: ${CONFIG_VERSION}
+
+  app_tmp: &app_tmp
+    restart: always
     build:
       context: .build
       args:
-        ELROND_VERSION: ${ELROND_VERSION}
-        CONFIG_VERSION: ${CONFIG_VERSION}
+        <<: *build_env
+
+services:
+
+  elrond-1:
+    <<: *app_tmp
+    container_name: elrond-1
+    volumes:
+      - ./data/elrond-1/config/:/opt/app/config/
+      - elrond-1:/opt/app/db/
+    environment:
+      DISPLAY_NAME: ${NODE_DISPLAY_NAME_1}
+
+  elrond-2:
+    <<: *app_tmp
+    container_name: elrond-2
+    volumes:
+      - ./data/elrond-2/config/:/opt/app/config/
+      - elrond-2:/opt/app/db/
+    environment:
+      DISPLAY_NAME: ${NODE_DISPLAY_NAME_2}
+
+  elrond-3:
+    <<: *app_tmp
+    container_name: elrond-3
+    volumes:
+      - ./data/elrond-3/config/:/opt/app/config/
+      - elrond-3:/opt/app/db/
+    environment:
+      DISPLAY_NAME: ${NODE_DISPLAY_NAME_3}
+
+  elrond-4:
+    <<: *app_tmp
+    container_name: elrond-4
+    volumes:
+      - ./data/elrond-4/config/:/opt/app/config/
+      - elrond-4:/opt/app/db/
+    environment:
+      DISPLAY_NAME: ${NODE_DISPLAY_NAME_4}
+
+  elrond-5:
+    <<: *app_tmp
+    container_name: elrond-5
+    volumes:
+      - ./data/elrond-5/config/:/opt/app/config/
+      - elrond-5:/opt/app/db/
+    environment:
+      DISPLAY_NAME: ${NODE_DISPLAY_NAME_5}
+
+  elrond-6:
+    <<: *app_tmp
+    container_name: elrond-6
+    volumes:
+      - ./data/elrond-6/config/:/opt/app/config/
+      - elrond-6:/opt/app/db/
+    environment:
+      DISPLAY_NAME: ${NODE_DISPLAY_NAME_6}
+
+volumes:
+  elrond-1:
+  elrond-2:
+  elrond-3:
+  elrond-4:
+  elrond-5:
+  elrond-6:

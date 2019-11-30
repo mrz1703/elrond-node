@@ -1,3 +1,4 @@
+# Not working v1.0.41
 FROM golang:1.13 as build
 
 RUN apt-get update && \
@@ -23,11 +24,14 @@ RUN git clone https://github.com/ElrondNetwork/elrond-config && \
     cd elrond-config && \
     git checkout ${CONFIG_VERSION}
 
-
+FROM ubuntu:18.04
 WORKDIR /opt/app
-RUN mv /opt/elrond-config/ /tmp/config/ && \
-    cp /opt/elrond-go/cmd/keygenerator/keygenerator /opt/elrond-go/cmd/node/node /opt/app/ && \
-    ln -s /opt/app/node /usr/local/bin/ && \
+RUN apt-get update && \
+    apt-get upgrade -y && \
+    apt-get install -y curl bash mc build-essential
+COPY --from=build /opt/elrond-config/ /tmp/config/
+COPY --from=build /opt/elrond-go/cmd/keygenerator/keygenerator /opt/elrond-go/cmd/node/node /opt/app/
+RUN ln -s /opt/app/node /usr/local/bin/ && \
     ln -s /opt/app/keygenerator /usr/local/bin/
 
 COPY entrypoint.sh /

@@ -11,18 +11,15 @@ After the first launch, all configuration files and a wallet are created automat
 
 
 ### Commands for starting and verifying a node
- * `docker-compose up -d` - run the node in daemon mode.
- * `docker-compose logs --tail 100 -f` - command to view logs.
- * `docker-compose down` - stop the node.
- * `docker-compose -f docker-compose.multiple.yml up -d` - run the multinode in daemon mode.
- * `docker-compose -f docker-compose.multiple.yml logs --tail 100 -f` - a command to view logs for a multinode.
- * `docker-compose -f docker-compose.multiple.yml down` - stop the multinode.
-
+ * `docker-compose up -d` - run the multinode in daemon mode.
+ * `docker-compose logs --tail 100 -f` - a command to view logs for a multinode.
+ * `docker-compose down` - stop the multinode.
+ * `docker-compose -f docker-compose.single.yml up -d` - run the singlenode in daemon mode.
+ * `docker-compose -f docker-compose.single.yml logs --tail 100 -f` - command to view logs.
+ * `docker-compose -f docker-compose.single.yml down` - stop the singlenode.
 
 ### Upgrade
- 1) Stop your node with the command `docker-compose down` or `docker-compose -f docker-compose.multiple.yml down`.
- 2) Copy your keys (`data/config/initialBalancesSk.pem` and `data/config/initialNodesSk.pem`) to a safe place and delete the folder `./data/`.
+ 1) Stop your node with the command `docker-compose down` or `docker-compose -f docker-compose.single.yml down`. If remove old DB, use arg `-v`, exmpl: `docker-compose down -v`
+ 2) Backup your keys (`data/config/initialBalancesSk.pem` and `data/config/initialNodesSk.pem`) or (`data/<elrond-[1-6]>/config/initialBalancesSk.pem` and `data/<elrond-[1-6]>/config/initialNodesSk.pem`).
  3) Update the value of the `.env` file to the new version values and build the new container with the `docker-compose build` command.
- 4) Run the node with the command `docker-compose up -d` or `docker-compose -f docker-compose.multiple.yml up -d`.
- 5) Stop the node with the command `docker-compose down` or` docker-compose -f docker-compose.multiple.yml down`. Copy the wallet keys (`initialBalancesSk.pem` and `initialNodesSk.pem`) from a safe place to the `./Data/config/` folder.
- 6) Run the node with the command `docker-compose up -d` or` docker-compose -f docker-compose.multiple.yml up -d`. And enjoy her work. =)
+ 4) Run the node with the command `docker-compose up -d` or `docker-compose -f docker-compose.single.yml up -d`. And enjoy her work. =)

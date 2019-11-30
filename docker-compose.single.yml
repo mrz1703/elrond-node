@@ -1,0 +1,19 @@
+version: '3.7'
+services:
+
+  elrond:
+    container_name: elrond
+#    restart: always
+    volumes:
+      - ./data/config/:/opt/app/config/
+      - ./data/db/:/opt/app/db/
+#      - ./data/logs/:/opt/app/logs/
+#      - ./data/stats/:/opt/app/stats/
+#    ports:
+#      - '127.0.0.1:8080:8080'    # API
+#      - '127.0.0.1:38303:38303'  # ???
+    build:
+      context: .build
+      args:
+        ELROND_VERSION: ${ELROND_VERSION}
+        CONFIG_VERSION: ${CONFIG_VERSION}
