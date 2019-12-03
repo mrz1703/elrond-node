@@ -8,7 +8,7 @@ services:
     build:
       context: .build
       dockerfile: autoupdater.Dockerfile
-#    restart: always
+    restart: always
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./:/opt/Elrond/
