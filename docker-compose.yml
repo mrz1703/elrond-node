@@ -76,3 +76,7 @@ volumes:
   elrond-4:
   elrond-5:
   elrond-6:
+
+networks:
+  default:
+    name: elrond-node

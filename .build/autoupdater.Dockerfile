@@ -22,5 +22,5 @@ RUN docker-compose version
 # ENV USER=elrond
 # ENV UID=1000
 # ENV GID=1000
-WORKDIR /opt/Elrond
-CMD ["/opt/Elrond/autoupdater.sh"]
+WORKDIR /opt/elrond-node
+CMD ["/opt/elrond-node/autoupdater.sh"]

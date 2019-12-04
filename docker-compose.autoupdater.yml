@@ -11,9 +11,15 @@ services:
     restart: always
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - ./:/opt/Elrond/
+      - ./:/opt/elrond-node/
     environment:
       USE_COMPOSE_FILE: ${USE_COMPOSE_FILE}
       RETRY_TIME_DONT_GET_TAG: ${RETRY_TIME_DONT_GET_TAG}
       RETRY_TIME_GET_TAG: ${RETRY_TIME_GET_TAG}
       GH_CREDENTIAL: ${GH_CREDENTIAL}
+
+networks:
+  default:
+    name: elrond-node_autoupdater
+    external:
+      name: elrond-node_default
