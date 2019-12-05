@@ -14,18 +14,26 @@ jobs:
       # - name: Build the Docker image
       #   run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
 
-      - name: docker build
-        uses: actions/docker/cli@master
+      - name: Publish to Registry
+        uses: elgohr/Publish-Docker-Github-Action@master
         with:
-          args: build -t mrz1703/elrond-node-autoupdater -f ./.build/autoupdater.Dockerfile .
+          name: mrz1703/elrond-node/autoupdater
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          dockerfile: ./.build/autoupdater.Dockerfile
 
-      - name: docker login
-        uses: actions/docker/login@master
-        env:
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      # - name: docker build
+      #   uses: actions/docker/cli@master
+      #   with:
+      #     args: build -t mrz1703/elrond-node-autoupdater -f ./.build/autoupdater.Dockerfile .
 
-      - name: docker push
-        uses: actions/docker/cli@master
-        with:
-          args: push mrz1703/elrond-node-autoupdater
+      # - name: docker login
+      #   uses: actions/docker/login@master
+      #   env:
+      #     DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      #     DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+
+      # - name: docker push
+      #   uses: actions/docker/cli@master
+      #   with:
+      #     args: push mrz1703/elrond-node-autoupdater
