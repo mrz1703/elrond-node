@@ -33,6 +33,10 @@ function dc_build {
     iprintf "Build new container"
     docker-compose build
 }
+function dc_down {
+    iprintf "Container down and cleaning volumes (old DB)"
+    docker-compose down -t ${DOCKER_TIMEOUT}
+}
 function dc_down_and_clean {
     iprintf "Container down and cleaning volumes (old DB)"
     docker-compose down -v -t ${DOCKER_TIMEOUT}
@@ -84,7 +88,8 @@ function while_check {
             update_version
             gen_dockercompose
             dc_build
-            dc_down_and_clean
+            dc_down
+            #dc_down_and_clean
             sleep 10s <&0 & wait
             dc_up
 
