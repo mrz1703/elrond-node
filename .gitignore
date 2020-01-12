@@ -1,3 +1,4 @@
 data/
+app/data/
+app/data/docker-compose.yml
 backup/
-autoupdater.log

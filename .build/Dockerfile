@@ -1,35 +1,38 @@
-FROM golang:1.13 as build
+FROM docker:dind
 
-RUN apt-get update && \
-    apt-get upgrade -y && \
-    apt-get install -y curl bash mc git make gcc g++ build-essential
+RUN apk upgrade --no-cache && \
+    apk add --no-cache \
+        bash \
+        jq \
+        curl \
+        grep \
+        sed \
+        ca-certificates \
+        openssl \
+        zlib \
+        libgcc \
+        python3 \
+        python3-dev \
+        git && \
+    pip3 install --no-cache-dir --upgrade pip && \
+    pip3 install jinja2-cli pyyaml
 
-# Pull elrond-go and compile
-WORKDIR /opt
-ARG ELROND_VERSION
-ENV GO111MODULE=on
-RUN git clone -b ${ELROND_VERSION} https://github.com/ElrondNetwork/elrond-go
-WORKDIR /opt/elrond-go
-RUN go mod vendor
-WORKDIR /opt/elrond-go/cmd/keygenerator
-RUN go build
-WORKDIR /opt/elrond-go/cmd/node
-RUN go build -i -v -ldflags="-X main.appVersion=$(git describe --tags --long --dirty)"
+# install docker-compose
+ENV DC_VERSION=1.25.0
+RUN curl -L "https://github.com/docker/compose/releases/download/${DC_VERSION}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+RUN chmod +x /usr/local/bin/docker-compose
+# install glibc for docker-compose
+RUN wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub && \
+    wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.29-r0/glibc-2.29-r0.apk && \
+    apk add glibc-2.29-r0.apk && \
+    rm glibc-2.29-r0.apk
+# set env and check
+ENV LD_LIBRARY_PATH=/lib:/usr/lib
+RUN docker-compose version
 
-# Pull elrond-config
-ARG CONFIG_VERSION
-WORKDIR /opt
-RUN git clone https://github.com/ElrondNetwork/elrond-config && \
-    cd elrond-config && \
-    git checkout ${CONFIG_VERSION}
+WORKDIR /opt/elrond-node/app
+#COPY ./app/ ./
 
+STOPSIGNAL SIGINT
 
-WORKDIR /opt/app
-RUN mv /opt/elrond-config/ /tmp/config/ && \
-    cp /opt/elrond-go/cmd/keygenerator/keygenerator /opt/elrond-go/cmd/node/node /opt/app/ && \
-    ln -s /opt/app/node /usr/local/bin/ && \
-    ln -s /opt/app/keygenerator /usr/local/bin/
-
-COPY entrypoint.sh /
-ENTRYPOINT ["/entrypoint.sh"]
-CMD ["node", "--use-log-view"]
+CMD ["/opt/elrond-node/app/autoupdater.sh"]
