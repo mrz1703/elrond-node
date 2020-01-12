@@ -1,0 +1,12 @@
+elrondVersion: v1.0.74
+configVersion: BoNwards-w09
+
+nodesDisplayName:
+  - node1
+  - node2
+  - node3
+  # - node4
+  
+# Important!!!
+# Don't change
+workingDirNode: /opt/elrond-node/app

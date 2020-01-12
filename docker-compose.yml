@@ -1,82 +1,17 @@
 version: '3.7'
 
-x-custom:
-  # Templates anchors
-  build_env: &build_env
-    ELROND_VERSION: ${ELROND_VERSION}
-    CONFIG_VERSION: ${CONFIG_VERSION}
-
-  app_tmp: &app_tmp
-    restart: always
-    build:
-      context: .build
-      args:
-        <<: *build_env
-
 services:
 
-  elrond-1:
-    <<: *app_tmp
-    container_name: elrond-1
+  autoupdater:
+    container_name: autoupdater
+    build:
+      context: ./.build/
+      dockerfile: Dockerfile
+    restart: always
     volumes:
-      - ./data/elrond-1/config/:/opt/app/config/
-      - elrond-1:/opt/app/db/
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./app/:/opt/elrond-node/app/
     environment:
-      DISPLAY_NAME: ${NODE_DISPLAY_NAME_1}
-
-  elrond-2:
-    <<: *app_tmp
-    container_name: elrond-2
-    volumes:
-      - ./data/elrond-2/config/:/opt/app/config/
-      - elrond-2:/opt/app/db/
-    environment:
-      DISPLAY_NAME: ${NODE_DISPLAY_NAME_2}
-
-  elrond-3:
-    <<: *app_tmp
-    container_name: elrond-3
-    volumes:
-      - ./data/elrond-3/config/:/opt/app/config/
-      - elrond-3:/opt/app/db/
-    environment:
-      DISPLAY_NAME: ${NODE_DISPLAY_NAME_3}
-
-  elrond-4:
-    <<: *app_tmp
-    container_name: elrond-4
-    volumes:
-      - ./data/elrond-4/config/:/opt/app/config/
-      - elrond-4:/opt/app/db/
-    environment:
-      DISPLAY_NAME: ${NODE_DISPLAY_NAME_4}
-
-  elrond-5:
-    <<: *app_tmp
-    container_name: elrond-5
-    volumes:
-      - ./data/elrond-5/config/:/opt/app/config/
-      - elrond-5:/opt/app/db/
-    environment:
-      DISPLAY_NAME: ${NODE_DISPLAY_NAME_5}
-
-  elrond-6:
-    <<: *app_tmp
-    container_name: elrond-6
-    volumes:
-      - ./data/elrond-6/config/:/opt/app/config/
-      - elrond-6:/opt/app/db/
-    environment:
-      DISPLAY_NAME: ${NODE_DISPLAY_NAME_6}
-
-volumes:
-  elrond-1:
-  elrond-2:
-  elrond-3:
-  elrond-4:
-  elrond-5:
-  elrond-6:
-
-networks:
-  default:
-    name: elrond-node
+      RETRY_TIME_IF_ERROR_GET_TAG: ${RETRY_TIME_IF_ERROR_GET_TAG}
+      RETRY_TIME_GET_TAG: ${RETRY_TIME_GET_TAG}
+      GH_CREDENTIAL: ${GH_CREDENTIAL}
